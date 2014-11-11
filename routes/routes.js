@@ -12,7 +12,10 @@ var db = require('../models/awsdb.js');
 //====================================================
 
 var getLandingPage = function(req, res) {
-	res.render('landingPage.ejs', {message: null});
+	res.render('landingPage.ejs', {message: null, 
+		                           name: "Füd Füd", 
+		                           username: null, 
+		                           useremail: null});
 }
 
 //====================================================
