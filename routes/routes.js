@@ -16,7 +16,7 @@ var getLandingPage = function(req, res) {
 	// 	                           name: "Füd Füd", 
 	// 	                           username: null, 
 	// 	                           useremail: null});
-	res.render('landing.html');
+	res.render('mainView.html');
 }
 
 //====================================================
