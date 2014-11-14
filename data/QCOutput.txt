@@ -1,0 +1,7 @@
+User				Runner 			 BlackListed?
+John Doe			Jane Smith			F
+Jane Smith			John Doe			T
+Jane Smith			Jeff Shmoe			T
+Jane Smith			Kevin Kay			F
+Jeff Shmoe			John Doe			F
+Jeff Shmoe			Kevin Kay			F

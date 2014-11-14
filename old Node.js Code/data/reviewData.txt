@@ -1,0 +1,7 @@
+Reviewer	Reviewed	Rating
+John Doe	Jane Smith	*****
+Jane Smith	John Doe	**
+Jane Smith	Jeff Shmoe	*
+Jane Smith	Kevin Kay	***
+Jeff Shmoe	John Doe	****
+Jeff Shmoe	Kevin Kay	*****
