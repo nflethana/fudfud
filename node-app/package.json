@@ -1,0 +1,31 @@
+{
+  "name": "HW5",
+  "version": "0.1.0",
+  "description": "HW5",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified! Configure in package.json\" && exit 1"
+  },
+  "repository": "",
+  "keywords": [
+    "node.js",
+    "eclipse",
+    "nodeclipse"
+  ],
+	"private": true,
+	"dependencies": {
+		"express": "4.x",
+		"ejs": "*",
+		"ejs-locals": "*",
+		"body-parser": "*",
+		"cookie-parser": "*",
+		"express-session": "*",
+		"aws-sdk": "*",
+    "async": "*",
+    "crypto": "*",
+		"lru-cache": "2.5.x"
+	},
+  "author": "",
+  "license": "MIT",
+  "readmeFilename": "README.md"
+}
