@@ -1,9 +1,26 @@
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
-<!-- style.css -->
-<link rel="stylesheet" type="text/css" href="style.css">
+<!-- Embed the layout.ejs file -->
+<% layout( 'layout' ) -%>
+
+<script>
+	$(document).ready(function() {
+		$.get("/getInfo", function(data, status){
+			$("#fullname").text(data.fullname);
+			$("#firstname").text(data.fullname.split(" ")[0]);
+			$("#img1").attr("src", data.image);
+			$("#img2").attr("src", data.image);
+			$("#email").text(data.username);
+			$("#phone").text(data.phone);
+			$("#total").text(data.total);
+			$("#rating").text(data.rating);
+		});
+		$("button#logout").click(function() {
+			$.get("/logout", function(data, status){
+				window.location.replace("/");
+			});
+		});
+	});
+</script>
+
 <div class="page">
 	<div class="sidebar">
 		<div align="center">
@@ -39,20 +56,20 @@
 		</div>
 	</div>
 	<div class="center container" align="center">
-		<h1 class="fudfontblack">Shreshth Khilani</h1>
+		<h1 class="fudfontblack" id="fullname"></h1>
 		<br>
 		<div class="row">
 			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-				<img src="http://www.seas.upenn.edu/~shreshth/coffee.jpg" style="height:240px;" class="img-circle"><br>
+				<img id="img1" src="http://www.seas.upenn.edu/~shreshth/no-image.jpg" style="height:240px;" class="img-circle"><br>
 			
 			</div>
 			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 			
-				<h3><img src="star.png" style="width:60px;"> 4.8/5</h3>
-				<h5>[15 Ratings]</h5>
+				<h3><img src="star.png" style="width:60px;"> <span id="rating"></span>/5</h3>
+				<h5>[<span id="total"></span> Ratings]</h5>
 				<br>
-				shreshth@seas.upenn.edu<br>
-				215-681-0793<br>
+				<span id="email"></span><br>
+				<span id="phone"></span><br>
 			</div>
 		</div>
 	</div>
@@ -60,13 +77,13 @@
 		<div align="center">
 			<a href="/home">
 				<div>
-					Shreshth<br>
-					<img src="http://www.seas.upenn.edu/~shreshth/coffee.jpg" style="height:58px; width:58px; padding-left:4px; padding-right:4px; padding-top:8px;" class="img-circle"><br>
+					<span id="firstname"></span><br>
+					<img id="img2" src="http://www.seas.upenn.edu/~shreshth/no-image.jpg" style="height:66px; width:58px; padding-left:4px; padding-right:4px; padding-top:8px; padding-bottom:8px;" class="img-circle"><br>
 				</div>
 			</a>
-			<a href="/logout">
+			<button id="logout" style="text-decoration: none;" type="button" class="btn btn-link">
 				<h5 class="otherfont">Logout</h5>
-			</a>
+			</button>
 			<a href="/add">
 				<h5 class="otherfont">+ Add<br>Füd-Run</h5>
 			</a>

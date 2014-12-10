@@ -50,6 +50,17 @@ trucks.init(function() {
 		app.get( '/home', routes.home );
 		app.post( '/validate', routes.validate );
 		app.post( '/create', routes.create );
+		app.get( '/getInfo', routes.getInfo );
+		app.get( '/logout', routes.logout );
+		app.get( '/engineering', routes.logout );
+		app.get( '/huntsman', routes.logout );
+		app.get( '/harnwell', routes.logout );
+		app.get( '/harrison', routes.logout );
+		app.get( '/rodin', routes.logout );
+		app.get( '/vp', routes.logout );
+		app.get( '/radian', routes.logout );
+		app.get( '/add', routes.add );
+		app.post( '/submitRun', routes.submitRun );
 
 		/////////////////////
 				
