@@ -9,15 +9,21 @@
 
 // These are our key-value stores
 var users;
-var friends;
-var userids;
+var ratings;
+var runners;
+var deliveries;
+var polls;
+var trucks;
 
 // We export the init() function to initialize
 // our KVS values
-exports.init = function(fr,usrs,uids,callback) {
+exports.init = function(usrs,rtngs,rnrs,dlvry,pll,trk,callback) {
 	users = usrs;
-	userids = uids;
-	friends = fr;
+	ratings = rtngs;
+	runners = rnrs;
+	deliveries = dlvry;
+	polls = pll;
+	trucks = trk;
 
 	callback();
 };

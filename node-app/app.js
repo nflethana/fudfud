@@ -29,25 +29,33 @@ app.use(session({
 
 var aws = require("./keyvaluestore.js");
 
-var friends = new aws('friends');
-var users = new aws('users');
-var userids = new aws('userids');
+var users = new aws('Users');
+var ratings = new aws('Ratings');
+var runners = new aws('Runners');
+var deliveries = new aws('Deliveries');
+var polls = new aws('Polls');
+var trucks = new aws('Trucks');
 
-friends.init(function() {
-	users.init(function() {
-		userids.init(function() {
+users.init(function() {
+ratings.init(function() {
+runners.init(function() {
+deliveries.init(function() {
+polls.init(function() {
+trucks.init(function() {
 			
-			routes.init(friends, users, userids, function() {
-				app.get( '/', routes.index );
-				app.get( '/index.html', routes.index );
+	routes.init(users,ratings,runners,deliveries,polls,trucks,function() {
+		app.get( '/', routes.index );
+		app.get( '/index.html', routes.index );
 
-				/////////////////////
+		/////////////////////
 				
-				http.createServer( app ).listen( app.get( 'port' ), function(){
-					  console.log( 'Open browser to http://localhost:' + app.get( 'port' ));
-					} );
-			});
-		});
+		http.createServer( app ).listen( app.get( 'port' ), function(){
+			console.log( 'Open browser to http://localhost:' + app.get( 'port' ));
+		} );
 	});
 });
-
+});
+});
+});
+});
+});
