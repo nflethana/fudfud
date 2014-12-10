@@ -1,0 +1,87 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.page {
+	min-height: 100%;
+	width: 100%;
+    position: relative;
+    overflow: auto;
+}
+
+.sidebar {
+	background: #FF9933;
+    height: 100%;
+    width: 18%;
+    position: absolute;
+    left: 0;
+}
+
+.rightbar {
+	background: #FF9933;
+    height: 100%;
+    min-width: 6%;
+    position: absolute;
+    right: 0;
+}
+
+.centerOut {
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+}
+
+.center {
+	height: 100%;
+	position: absolute;
+	left: 18%;
+	width: 76%;
+	overflow: auto;
+}
+
+@font-face {
+    font-family: arabons;
+    src: url("XXII ARABIAN-ONENIGHTSTAND.ttf");
+}
+
+@font-face {
+    font-family: jaapokki;
+    src: url("jaapokki-regular.ttf");
+}
+
+.fudfont {
+    font-family: arabons;
+    color: white;
+}
+
+.fudfontblack {
+    font-family: jaapokki;
+    color: black;
+}
+
+.otherfont {
+    color: white;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-family: jaapokki;
+}
+
+.foottext {
+	color: white;
+	position: absolute;
+	bottom: 8px;
+	left: 8px;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover, a:active, a:visited, a:link{
+    text-decoration: none;
+    color: white;
+}

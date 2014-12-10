@@ -32,7 +32,7 @@ exports.init = function(usrs,rtngs,rnrs,dlvry,pll,trk,callback) {
  * Default index page fetches some content and returns it
  */
 exports.index = function(req, res) {
-	var t = '';
+	var t = 'Füd-Füd';
 	
 	if (req.session.login) {
 		res.redirect("/home");
@@ -41,9 +41,42 @@ exports.index = function(req, res) {
 	// See if the session object in the cookie has
 	// been set, and change title correspondingly
 	if (!req.session.loadedData)
-		t = 'user login';
+		t = 'Füd-Füd';
 	else
-		t = 'User login or creation logged in (previously fetched data)';
+		t = 'Füd-Füd (previously fetched data)';
 	
 	res.render('index', { title: t });
+}
+
+exports.home = function(req, res) {
+	var t = 'Home';
+	
+	//if (req.session.login) {
+	//	res.redirect("/home");
+	//	return;
+	//}
+
+	res.render('profile', { title: t });
+}
+
+exports.validate = function(req, res) {
+	var t = 'Home';
+	
+	//if (req.session.login) {
+	//	res.redirect("/home");
+	//	return;
+	//}
+
+	res.send({"username": req.body.username, "success": false, "eMsg": "Incorrect Password!"});
+}
+
+exports.create = function(req, res) {
+	var t = 'Home';
+	
+	//if (req.session.login) {
+	//	res.redirect("/home");
+	//	return;
+	//}
+
+	res.send({"username": req.body.username, "success": false, "eMsg": "Incorrect Password!"});
 }

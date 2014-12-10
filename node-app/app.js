@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var async = require('async');
+var async = require('crypto');
 
 app.set('port', process.env.PORT || 8088);
 app.engine('ejs', engine);
@@ -17,8 +18,8 @@ app.use(bodyParser.urlencoded({extended: true }));
 app.use(bodyParser.json());
 app.use( express.static( path.join( __dirname, 'public' )));
 app.use(express.static(__dirname + '/views/stylesheets'));
-
-
+app.use(express.static(__dirname + '/views/fonts'));
+app.use(express.static(__dirname + '/views/images'));
 
 app.use(cookieParser());
 app.use(session({
@@ -46,6 +47,9 @@ trucks.init(function() {
 	routes.init(users,ratings,runners,deliveries,polls,trucks,function() {
 		app.get( '/', routes.index );
 		app.get( '/index.html', routes.index );
+		app.get( '/home', routes.home );
+		app.post( '/validate', routes.validate );
+		app.post( '/create', routes.create );
 
 		/////////////////////
 				
