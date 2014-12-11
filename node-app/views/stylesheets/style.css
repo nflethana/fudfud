@@ -17,6 +17,7 @@ html, body {
     width: 18%;
     position: absolute;
     left: 0;
+    border-right: 1px solid #333;
 }
 
 .rightbar {
@@ -25,6 +26,7 @@ html, body {
     min-width: 6%;
     position: absolute;
     right: 0;
+    border-left: 1px solid #333;
 }
 
 .centerOut {
@@ -54,6 +56,11 @@ html, body {
     src: url("jaapokki-regular.ttf");
 }
 
+@font-face {
+    font-family: eskindar;
+    src: url("eskindarexpand.ttf");
+}
+
 .fudfont {
     font-family: arabons;
     color: #eee;
@@ -61,7 +68,7 @@ html, body {
 
 .fudfontblack {
     font-family: jaapokki;
-    color: black;
+    color: #333;
 }
 
 .otherfont {
@@ -75,14 +82,17 @@ html, body {
 	color: #eee;
 	position: absolute;
 	bottom: 8px;
-	left: 8px;
+	left: 6%;
+	text-align: center;
 }
 
-a {
+a:hover, a:active {
 	text-decoration: none;
+    background: #eee;
+    color: #eee;
 }
 
-a:hover, a:active, a:visited, a:link{
+a:visited, a:link{
     text-decoration: none;
     color: #eee;
 }

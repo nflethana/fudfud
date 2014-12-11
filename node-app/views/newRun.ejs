@@ -3,21 +3,104 @@
 
 <script>
 	$(document).ready(function() {
-		$.get("/getInfo", function(data, status){
-			$("#fullname").text(data.fullname);
-			$("#firstname").text(data.fullname.split(" ")[0]);
-			$("#img1").attr("src", data.image);
-			$("#img2").attr("src", data.image);
-			$("#email").text(data.username);
-			$("#phone").text(data.phone);
-			$("#total").text(data.total);
-			$("#rating").text(data.rating);
+		function setDateInput() {	
+			var now = new Date();
+			var hours = now.getHours();
+			var ampm = hours >= 12 ? " PM" : " AM";
+			hours = hours >= 12 ? hours - 12 : hours;
+			var mins = now.getMinutes();
+			if (mins > 0 && mins < 15)
+				mins = 15;
+			else if (mins > 15 && mins < 30)
+				mins = 30;
+			else if (mins > 30 && mins < 45)
+				mins = 45;
+			else if (mins > 45 && mins < 60) {
+				hours ++;
+				mins = 0;
+			}
+			now.setHours(hours);
+			now.setMinutes(mins);
+			for (var i = 0; i < 12; i++) {
+				if (mins == 0) {
+					if (i < 8)
+						$("#time1").append("<option>" + hours + ":00" + ampm + "</option>");
+					$("#time2").append("<option>" + hours + ":00" + ampm + "</option>");
+				}
+				else {
+					if (i < 8)
+						$("#time1").append("<option>" + hours + ":" + mins + ampm + "</option>");
+					$("#time2").append("<option>" + hours + ":" + mins + ampm + "</option>");
+				}
+				mins += 15;
+				if (mins % 60 == 0) {
+					mins = 0;
+					hours++;
+				}
+			};
+		}
+
+		$("button#submit").click(function() {
+			var locations = ["Engineering", "Huntsman", "Harnwell", "Harrison", "Rodin", "VP", "Radian"];
+			var loc = [];
+			var flag1 = false;
+			for (var i = 0; i < locations.length; i++) {
+				if ($("#" + locations[i]).is(":checked")) {
+					flag1 = true;
+					loc.push($("#" + locations[i]).val());
+				}
+			}
+			var trucks = ["Magic", "NYG", "YueKee"];
+			var tr = [];
+			var flag2 = false;
+			for (var i = 0; i < trucks.length; i++) {
+				if ($("#" + trucks[i]).is(":checked")) {
+					flag2 = true;
+					tr.push($("#" + trucks[i]).val());
+				}
+			}
+			var t1 = $("#time1").val();
+			var t2 = $("#time2").val();
+			if (loc.length == 0) {
+				$("#data").text("Select at least one delivery location!");
+			}
+			else if (tr.length == 0) {
+				$("#data").text("Select at least one food truck!");
+			}
+			else if (t1 == "Pick Time" || t2 == "Pick Time") {
+				$("#data").text("Please complete all fields to continue!");
+			}
+			else {
+				var now = new Date();
+				var json_data = {
+					"pickuptime": t1,
+					"eta": t2,
+					"location": loc,
+					"truck": tr
+				}
+				$.post("/submitRun", json_data, 
+              		function(data){
+          				if(!data.success) {
+            				console.log("error");
+          				}
+          				else {
+           					 console.log("food run added");
+          				}
+        		});
+			}
 		});
+
+		$.get("/getInfo", function(data, status){
+			$("#firstname").text(data.fullname.split(" ")[0]);
+			$("#img2").attr("src", data.image);
+		});
+
 		$("button#logout").click(function() {
 			$.get("/logout", function(data, status){
-				window.location = "/";
+				window.location.replace("/");
 			});
 		});
+		setDateInput();
 	});
 </script>
 
@@ -50,7 +133,7 @@
 			<a href="/radian">
 				<h4 class="otherfont">Radian</h4>
 			</a>
-			<div class="foottext">
+			<div class="foottext" align="center">
 				© Füd-Füd 2014
 			</div>
 		</div>
@@ -58,14 +141,95 @@
 	<div class="center container" align="center">
 		<h1 class="fudfontblack">Add a Füd-Run</h1>
 		<br>
-		
+		<div id="data" style="color: red;"></div>
+		<div class="row">
+			<div class="col-lg-4 col-lg-offset-2 col-md-4 col-md-offset-2 col-sm-12 col-xs-12" style="text-align:left;">
+				<h4 class="fudfontblack">Where can you deliver to?</h4>
+				<div class="checkbox container" style="text-align:left; width:100%;">
+		  			<label>
+		    			<input id="Engineering" type="checkbox" name="location" value="Engineering">
+		    			Engineering Quad
+		  			</label>
+		  			<br>
+		  			<label>
+		    			<input id="Huntsman" type="checkbox" name="location" value="Huntsman">
+		    			Huntsman
+		  			</label>
+		  			<br>
+		  			<label>
+		    			<input id="Harnwell" type="checkbox" name="location" value="Harnwell">
+		    			Harnwell
+		  			</label>
+		  			<br>
+		  			<label>
+		    			<input id="Harrison" type="checkbox" name="location" value="Harrison">
+		    			Harrison
+		  			</label>
+		  			<br>
+		  			<label>
+		    			<input id="Rodin" type="checkbox" name="location" value="Rodin">
+		    			Rodin
+		  			</label>
+		  			<br>
+		  			<label>
+		    			<input id="VP" type="checkbox" name="location" value="VP">
+		    			Van Pelt
+		  			</label>
+		  			<br>
+		  			<label>
+		    			<input id="Radian" type="checkbox" name="location" value="Radian">
+		    			Radian
+		  			</label>
+		  			<br>
+				</div>
+				<br>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="text-align:left;">
+				<h4 class="fudfontblack">Which Food Trucks can you pick up from?</h4>
+				<div class="checkbox container" style="text-align:left; width:100%;">
+		  			<label>
+		    			<input id="Magic" type="checkbox" value="Magic">
+		    			Magic Carpet
+		  			</label>
+		  			<br>
+		  			<label>
+		    			<input id="NYG" type="checkbox" value="NYG">
+		    			New York Gyro
+		  			</label>
+		  			<br>
+		  			<label>
+		    			<input id="YueKee" type="checkbox" value="YueKee">
+		    			Yue Kee
+		  			</label>
+		  			<br>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-lg-4 col-lg-offset-2 col-md-4 col-md-offset-2 col-sm-12 col-xs-12" style="text-align:left;">
+				<h4 class="fudfontblack">When do you intend to pick up?</h4>
+				<select id="time1" class="form-control time" style="width:80%">
+					<option>Pick Time</option>
+				</select>
+				<br>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="text-align:left;">
+				<h4 class="fudfontblack">ETA of meal?</h4>
+				<select id="time2" class="form-control time" style="width:80%">
+					<option>Pick Time</option>
+				</select>
+			</div>
+		</div>
+		<br>
+		<button id="submit" class="btn btn-default">Run</button>
 	</div>
 	<div class="rightbar otherfont">
 		<div align="center">
 			<a href="/home">
 				<div>
 					<span id="firstname"></span><br>
-					<img id="img2" src="http://www.seas.upenn.edu/~shreshth/no-image.jpg" style="height:66px; width:58px; padding-left:4px; padding-right:4px; padding-top:8px; padding-bottom:8px;" class="img-circle"><br>
+					<img id="img2" src="http://www.seas.upenn.edu/~shreshth/no-image.jpg" style="overflow:hidden; height:66px; width:58px; padding-left:4px; padding-right:4px; padding-top:8px; padding-bottom:8px;" class="img-circle"><br>
 				</div>
 			</a>
 			<button id="logout" style="text-decoration: none;" type="button" class="btn btn-link">

@@ -155,5 +155,7 @@ exports.add = function(req, res) {
 }
 
 exports.submitRun = function(req, res) {
-	// TODO
+	console.log(req.session);
+	console.log(req.body);
+	// TODO: Currently only passing time. Also get date. Then add to runners table.
 }

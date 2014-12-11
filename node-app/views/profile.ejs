@@ -15,7 +15,7 @@
 		});
 		$("button#logout").click(function() {
 			$.get("/logout", function(data, status){
-				window.location = "/";
+				window.location.replace("/");
 			});
 		});
 	});
@@ -50,7 +50,7 @@
 			<a href="/radian">
 				<h4 class="otherfont">Radian</h4>
 			</a>
-			<div class="foottext">
+			<div class="foottext" align="center">
 				© Füd-Füd 2014
 			</div>
 		</div>
