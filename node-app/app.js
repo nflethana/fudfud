@@ -30,21 +30,19 @@ app.use(session({
 
 var aws = require("./keyvaluestore.js");
 
-var users = new aws('Users');
+var users = new aws('users');
 var ratings = new aws('Ratings');
 var runners = new aws('Runners');
 var deliveries = new aws('Deliveries');
-var polls = new aws('Polls');
 var trucks = new aws('Trucks');
 
 users.init(function() {
 ratings.init(function() {
 runners.init(function() {
 deliveries.init(function() {
-polls.init(function() {
 trucks.init(function() {
 			
-	routes.init(users,ratings,runners,deliveries,polls,trucks,function() {
+	routes.init(users,ratings,runners,deliveries,trucks,function() {
 		app.get( '/', routes.index );
 		app.get( '/index.html', routes.index );
 		app.get( '/home', routes.home );
@@ -68,7 +66,6 @@ trucks.init(function() {
 			console.log( 'Open browser to http://localhost:' + app.get( 'port' ));
 		} );
 	});
-});
 });
 });
 });

@@ -12,17 +12,15 @@ var users;
 var ratings;
 var runners;
 var deliveries;
-var polls;
 var trucks;
 
 // We export the init() function to initialize
 // our KVS values
-exports.init = function(usrs,rtngs,rnrs,dlvry,pll,trk,callback) {
+exports.init = function(usrs,rtngs,rnrs,dlvry,trk,callback) {
 	users = usrs;
 	ratings = rtngs;
 	runners = rnrs;
 	deliveries = dlvry;
-	polls = pll;
 	trucks = trk;
 
 	callback();
@@ -106,6 +104,7 @@ exports.create = function(req, res) {
 				users.put(req.body.username, JSON.stringify(val), function(err, data) {
 					if (err) {
 						console.log("Error Create 2");
+						console.log(err);
 					}
 					else {
 						req.session.login = true;
