@@ -6,8 +6,6 @@
 		function setDateInput() {	
 			var now = new Date();
 			var hours = now.getHours();
-			var ampm = hours >= 12 ? " PM" : " AM";
-			hours = hours >= 12 ? hours - 12 : hours;
 			var mins = now.getMinutes();
 			if (mins > 0 && mins < 15)
 				mins = 15;
@@ -22,21 +20,22 @@
 			now.setHours(hours);
 			now.setMinutes(mins);
 			for (var i = 0; i < 12; i++) {
+				var ampm = "";
+				var mins2;
 				if (mins == 0) {
-					if (i < 8)
-						$("#time1").append("<option>" + hours + ":00" + ampm + "</option>");
-					$("#time2").append("<option>" + hours + ":00" + ampm + "</option>");
+					mins2 = "00";
 				}
 				else {
-					if (i < 8)
-						$("#time1").append("<option>" + hours + ":" + mins + ampm + "</option>");
-					$("#time2").append("<option>" + hours + ":" + mins + ampm + "</option>");
+					mins2 = mins;
 				}
-				mins += 15;
-				if (mins % 60 == 0) {
-					mins = 0;
-					hours++;
-				}
+				var dformat = now.getHours() + ":" + now.getMinutes() + ":" + now.getDate() + ":" + now.getMonth() + ":" + now.getFullYear();
+				var dformat = Date.parse(now);
+				if (i < 8)
+					$("#time1").append("<option value=" + dformat + ">" + hours + ":" + mins2 + ampm + "</option>");
+				$("#time2").append("<option value=" + dformat + ">" + hours + ":" + mins2 + ampm + "</option>");
+				now.setMinutes(mins + 15);
+				mins = now.getMinutes();
+				hours = now.getHours();
 			};
 		}
 
@@ -84,7 +83,7 @@
             				console.log("error");
           				}
           				else {
-           					 console.log("food run added");
+           					$('#myModal').modal('show');
           				}
         		});
 			}
@@ -240,4 +239,22 @@
 			</a>
 		</div>
 	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Thank You :)</h4>
+      </div>
+      <div class="modal-body">
+        Thanks for adding a Run! Stay in line and watch out for delivery requests.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="window.location.reload()">Close</button>
+      </div>
+    </div>
+  </div>
 </div>

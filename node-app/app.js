@@ -20,6 +20,7 @@ app.use( express.static( path.join( __dirname, 'public' )));
 app.use(express.static(__dirname + '/views/stylesheets'));
 app.use(express.static(__dirname + '/views/fonts'));
 app.use(express.static(__dirname + '/views/images'));
+app.use(express.static(__dirname + '/views/js'));
 
 app.use(cookieParser());
 app.use(session({
@@ -32,7 +33,7 @@ var aws = require("./keyvaluestore.js");
 
 var users = new aws('users');
 var ratings = new aws('Ratings');
-var runners = new aws('Runners');
+var runners = new aws('runners');
 var deliveries = new aws('Deliveries');
 var trucks = new aws('Trucks');
 

@@ -155,7 +155,37 @@ exports.add = function(req, res) {
 }
 
 exports.submitRun = function(req, res) {
-	console.log(req.session);
-	console.log(req.body);
-	// TODO: Currently only passing time. Also get date. Then add to runners table.
+	var locations = req.body.location;
+	var t1 = new Date(parseFloat(req.body.pickuptime));
+	var t2 = new Date(parseFloat(req.body.eta));
+	var json_data = {
+		pickuptime: t1,
+  		eta: t2,
+  		truck: req.body.truck,
+  		username: req.session.username
+	};
+
+	function async(args, callback) {
+		console.log(args);
+		runners.addToSet(args, JSON.stringify(json_data), function(err, data){
+			if (err) {
+				console.log("Error submitRun 1");
+			}
+			else {
+				callback(true);
+			}
+		});
+		setTimeout(function() { callback(false); }, 1000);
+	}
+
+
+	var count = locations.length;
+	for (var i = 0; i < locations.length; i++) {
+		async(locations[i], function(complete){
+			count--;
+			if(count == 0) {
+			    res.send({"success": true, "eMsg": ""});
+			}
+		});
+	}
 }
