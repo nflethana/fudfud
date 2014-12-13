@@ -140,7 +140,27 @@ exports.getInfo = function(req, res) {
 }
 
 exports.getRunners = function(req, res) {
-	// TODO
+	if (!req.session.login) {
+		res.redirect("/");
+		return;
+	}
+
+	var location = req.route.path.split('/')[1].toUpperCase();
+	// console.log(location);
+
+	runners.get(location, function(err, val) {
+		if (err) {
+			console.log("error getting location runs");
+		} else {
+			// console.log(val);
+			if (val == null) {
+				res.send({});
+			} else {
+				var obj = JSON.parse(val);
+				res.send(obj);
+			}
+		}
+	});
 }
 
 exports.add = function(req, res) {
@@ -181,7 +201,7 @@ exports.submitRun = function(req, res) {
 
 	var count = locations.length;
 	for (var i = 0; i < locations.length; i++) {
-		async(locations[i], function(complete){
+		async(locations[i].toUpperCase(), function(complete){
 			count--;
 			if(count == 0) {
 			    res.send({"success": true, "eMsg": ""});
