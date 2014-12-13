@@ -146,8 +146,8 @@ exports.getRunners = function(req, res) {
 		return;
 	}
 
-	var location = req.route.path.split('/')[1].toUpperCase();
-	// console.log(location);
+	var location = req.session.location.toUpperCase();
+	console.log(location);
 
 	runners.getSet(location, function(err, val) {
 		if (err) {
@@ -155,7 +155,11 @@ exports.getRunners = function(req, res) {
 		} else {
 			console.log(val);
 			if (val == null) {
-				res.send({});
+				var returnObj = {
+					"location":  req.session.location,
+					"data": null
+				}
+				res.send(returnObj);
 			} else {
 				var returnData = [];
 				async.each(val, function(obj, callback) {
@@ -175,7 +179,11 @@ exports.getRunners = function(req, res) {
 					if (err) {
 						console.log(err);
 					} else {
-						res.send(returnData);
+						var returnObj = {
+							"location":  req.session.location,
+							"data": returnData
+						}
+						res.send(returnObj);
 					}
 				});
 			}
@@ -192,6 +200,19 @@ exports.add = function(req, res) {
 	}
 
 	res.render('newRun', { title: t });
+}
+
+exports.delivery = function(req, res) {
+	var location = req.route.path.split('/')[1];
+	location = location.charAt(0).toUpperCase() + location.slice(1);
+	var t = 'Add Füd-Run | ' + location;
+
+	if (!req.session.login) {
+		res.redirect("/");
+		return;
+	}
+	req.session.location = location;
+	res.render('delivery', { title: t });
 }
 
 exports.submitRun = function(req, res) {

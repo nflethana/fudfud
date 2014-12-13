@@ -51,13 +51,14 @@ trucks.init(function() {
 		app.post( '/create', routes.create );
 		app.get( '/getInfo', routes.getInfo );
 		app.get( '/logout', routes.logout );
-		app.get( '/engineering', routes.getRunners );
-		app.get( '/huntsman', routes.getRunners );
-		app.get( '/harnwell', routes.getRunners );
-		app.get( '/harrison', routes.getRunners );
-		app.get( '/rodin', routes.getRunners );
-		app.get( '/vp', routes.getRunners );
-		app.get( '/radian', routes.getRunners );
+		app.get( '/engineering', routes.delivery );
+		app.get( '/huntsman', routes.delivery );
+		app.get( '/harnwell', routes.delivery );
+		app.get( '/harrison', routes.delivery );
+		app.get( '/rodin', routes.delivery );
+		app.get( '/vp', routes.delivery );
+		app.get( '/radian', routes.delivery );
+		app.get( '/getRunners', routes.getRunners );
 		app.get( '/add', routes.add );
 		app.post( '/submitRun', routes.submitRun );
 

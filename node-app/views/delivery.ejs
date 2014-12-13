@@ -1,0 +1,80 @@
+<!-- Embed the layout.ejs file -->
+<% layout( 'layout' ) -%>
+
+<script>
+	$(document).ready(function() {
+		$.get("/getRunners", function(data, status){
+			$("#heading").text("List of Füd-Runs to " + data.location);
+			$("#lol").text("");
+			if (data.data == null)
+				$("#lol").text("No Runners Available :(");
+			else 
+				for (var i = 0; i < data.data.length; i++) {
+					$("#lol").append("" +
+						"<div class='col-md-4'>" +
+	        					"<div class='thumbnail'>" +
+	          						"<div class='caption' align='center'>" +
+	            						"<h3>Varun Agarwal</h3>" +
+	            						"<p>agarwalv@seas.upenn.edu</p>" +
+							            "<p>267-255-3297</p>" +
+							            "<h5>Delivering From</h5>" +
+							            "<p>New York Gyro</p>" +
+							            "<h5><span class='glyphicon glyphicon-star' aria-hidden='true'></span>3.3 (4 Ratings)</h5>" +
+							            "<h4>ETA: 4:45 PM</h4>" +
+							            "<p><a href='#'' class='btn btn-default' role='button' data-toggle='modal' data-target='#myModal'>Review</a></p>" +
+							        "</div>" +
+							    "</div>" +
+							"</div>");
+			}
+		});
+	});
+</script>
+
+<div class="page">
+	<div class="sidebar">
+		<div align="center">
+			<a href="/home">
+				<h1 class="fudfont">Füd-Füd</h1>
+			</a>
+			<div style="padding-top:32px;">
+				<a href="/engineering">
+					<h4 class="otherfont">Engineering Quad</h4>
+				</a>
+			</div>
+			<a href="/huntsman">
+				<h4 class="otherfont">Huntsman</h4>
+			</a>
+			<a href="/harnwell">
+				<h4 class="otherfont">Harnwell</h4>
+			</a>
+			<a href="/harrison">
+				<h4 class="otherfont">Harrison</h4>
+			</a>
+			<a href="/rodin">
+				<h4 class="otherfont">Rodin</h4>
+			</a>
+			<a href="/vp">
+				<h4 class="otherfont">Van Pelt</h4>
+			</a>
+			<a href="/radian">
+				<h4 class="otherfont">Radian</h4>
+			</a>
+			<div class="foottext" align="center">
+				© Füd-Füd 2014
+			</div>
+		</div>
+	</div>
+	<div class="center container" align="center">
+		<h1 id="heading" class="fudfontblack"></h1>
+		<div id="lol"></div>
+	</div>
+	<div class="rightbar">
+		<div class="othertext" align="center">
+			<a href="/">
+				<div>
+					<br>Login<br>Page
+				</div>
+			</a>
+		</div>
+	</div>
+</div>
