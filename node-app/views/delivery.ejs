@@ -15,22 +15,51 @@
 				$("#lol").text("No Runners Available :(");
 			else 
 				for (var i = 0; i < data.data.length; i++) {
+					var current = data.data[i];
+					var un = current.username;
+					var fn = current.userInfo.fullname;
+					var ph = current.userInfo.phone;
+					var tr = current.truck;
+					var str_tr = "";
+					var etaDate = new Date(current.eta);
+					var eta = "";
+					if (etaDate.getMinutes() == 0)
+						eta = etaDate.getHours() + ":00";
+					else 
+						eta = etaDate.getHours() + ":" + etaDate.getMinutes();
+					var ratings = current.userInfo.rating;
+					var total = current.userInfo.total;
+					var rate_str = ratings + " (" + total + " Ratings)";
+					for (var j = 0; j < tr.length; j++) {
+						if (tr[j] == "Magic")
+							tr[j] = "Magic Carpet";
+						else if (tr[j] == "NYG")
+							tr[j] = "NY Gyro";
+						else if (tr[j] == "YueKee")
+							tr[j] = "Yue Kee";
+						str_tr += "<p>" + tr[j] + "</p>";
+					}
 					$("#lol").append("" +
 						"<div class='col-md-4'>" +
 	        					"<div class='thumbnail'>" +
 	          						"<div class='caption' align='center'>" +
-	            						"<h3>Varun Agarwal</h3>" +
-	            						"<p>agarwalv@seas.upenn.edu</p>" +
-							            "<p>267-255-3297</p>" +
+	            						"<h3>" + fn + "</h3>" +
+	            						"<p>" + un + "</p>" +
+							            "<p>" + ph + "</p>" +
 							            "<h5>Delivering From</h5>" +
-							            "<p>New York Gyro</p>" +
-							            "<h5><span class='glyphicon glyphicon-star' aria-hidden='true'></span>3.3 (4 Ratings)</h5>" +
-							            "<h4>ETA: 4:45 PM</h4>" +
-							            "<p><a href='#'' class='btn btn-default' role='button' data-toggle='modal' data-target='#myModal'>Review</a></p>" +
+							            str_tr +
+							            "<h5><span class='glyphicon glyphicon-star' aria-hidden='true'></span>" + rate_str + "</h5>" +
+							            "<h4>ETA: " + eta + "</h4>" +
+							            "<p><a href='#'' class='btn btn-default thisclass' role='button' data-toggle='modal' data-target='#myModal'>Review</a></p>" +
 							        "</div>" +
 							    "</div>" +
 							"</div>");
 			}
+		});
+		$("button#logout").click(function() {
+			$.get("/logout", function(data, status){
+				window.location.replace("/");
+			});
 		});
 	});
 </script>
@@ -89,4 +118,26 @@
 			</a>
 		</div>
 	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Rate the Runner:</h4>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-default" data-dismiss="modal">1 <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">2 <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">3 <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">4 <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">5 <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
