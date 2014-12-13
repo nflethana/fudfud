@@ -3,6 +3,11 @@
 
 <script>
 	$(document).ready(function() {
+		$.get("/getInfo", function(data, status){
+			$("#firstname").text(data.fullname.split(" ")[0]);
+			$("#img2").attr("src", data.image);
+		});
+
 		$.get("/getRunners", function(data, status){
 			$("#heading").text("List of Füd-Runs to " + data.location);
 			$("#lol").text("");
@@ -68,12 +73,19 @@
 		<h1 id="heading" class="fudfontblack"></h1>
 		<div id="lol"></div>
 	</div>
-	<div class="rightbar">
-		<div class="othertext" align="center">
-			<a href="/">
+	<div class="rightbar otherfont">
+		<div align="center">
+			<a href="/home">
 				<div>
-					<br>Login<br>Page
+					<span id="firstname"></span><br>
+					<img id="img2" src="http://www.seas.upenn.edu/~shreshth/no-image.jpg" style="height:66px; width:58px; padding-left:4px; padding-right:4px; padding-top:8px; padding-bottom:8px;" class="img-circle"><br>
 				</div>
+			</a>
+			<button id="logout" style="text-decoration: none;" type="button" class="btn btn-link">
+				<h5 class="otherfont">Logout</h5>
+			</button>
+			<a href="/add">
+				<h5 class="otherfont">+ Add<br>Füd-Run</h5>
 			</a>
 		</div>
 	</div>
