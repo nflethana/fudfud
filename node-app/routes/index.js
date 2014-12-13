@@ -170,7 +170,9 @@ exports.getRunners = function(req, res) {
 							console.log("Error getting user");
 						} else {
 							var user = JSON.parse(val);
+							// console.log(user);
 							run.userInfo = user;
+							// console.log(run);
 							returnData.push(run);
 							callback();
 						}
@@ -183,6 +185,7 @@ exports.getRunners = function(req, res) {
 							"location":  req.session.location,
 							"data": returnData
 						}
+						// console.log(returnObj);
 						res.send(returnObj);
 					}
 				});
@@ -214,6 +217,19 @@ exports.delivery = function(req, res) {
 	req.session.location = location;
 	res.render('delivery', { title: t });
 }
+
+exports.menu = function(req, res) {
+	if (!req.session.login) {
+		res.redirect("/");
+		return;
+	}
+
+	res.render('menu');
+};
+
+exports.getMenu = function(req, res) {
+	res.send({});
+};
 
 exports.submitRun = function(req, res) {
 	var locations = req.body.location;

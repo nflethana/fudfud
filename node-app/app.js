@@ -61,6 +61,8 @@ trucks.init(function() {
 		app.get( '/getRunners', routes.getRunners );
 		app.get( '/add', routes.add );
 		app.post( '/submitRun', routes.submitRun );
+		app.get( '/menu', routes.menu );
+		app.get( '/getMenu', routes.getMenu);
 
 		/////////////////////
 				
