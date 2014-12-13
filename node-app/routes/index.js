@@ -157,7 +157,16 @@ exports.getRunners = function(req, res) {
 				res.send({});
 			} else {
 				var obj = JSON.parse(val);
-				res.send(obj);
+				var username = obj.username;
+				users.get(username, function(err, val) {
+					if (err) {
+						console.log("Error getting user");
+					} else {
+						var user = JSON.parse(val);
+						obj.userInfo = user;
+						res.send(obj);
+					}
+				});
 			}
 		}
 	});
