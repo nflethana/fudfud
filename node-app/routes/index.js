@@ -6,6 +6,7 @@
 // assign to exports.XXX is callable by outside modules,
 // and we can "hook" to it via routes.XXX.
 
+var async = require('async');
 
 // These are our key-value stores
 var users;
@@ -148,23 +149,33 @@ exports.getRunners = function(req, res) {
 	var location = req.route.path.split('/')[1].toUpperCase();
 	// console.log(location);
 
-	runners.get(location, function(err, val) {
+	runners.getSet(location, function(err, val) {
 		if (err) {
 			console.log("error getting location runs");
 		} else {
-			// console.log(val);
+			console.log(val);
 			if (val == null) {
 				res.send({});
 			} else {
-				var obj = JSON.parse(val);
-				var username = obj.username;
-				users.get(username, function(err, val) {
+				var returnData = [];
+				async.each(val, function(obj, callback) {
+					var run = JSON.parse(obj);
+					var username = run.username;
+					users.get(username, function(err, val) {
+						if (err) {
+							console.log("Error getting user");
+						} else {
+							var user = JSON.parse(val);
+							run.userInfo = user;
+							returnData.push(run);
+							callback();
+						}
+					});
+				}, function(err) {
 					if (err) {
-						console.log("Error getting user");
+						console.log(err);
 					} else {
-						var user = JSON.parse(val);
-						obj.userInfo = user;
-						res.send(obj);
+						res.send(returnData);
 					}
 				});
 			}
