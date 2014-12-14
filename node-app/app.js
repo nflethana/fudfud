@@ -63,6 +63,8 @@ trucks.init(function() {
 		app.post( '/submitRun', routes.submitRun );
 		app.get( '/menu', routes.menu );
 		app.get( '/getMenu', routes.getMenu);
+		app.post( '/postRating', routes.postRating );
+		app.get( '/getRatings', routes.getRatings );
 
 		/////////////////////
 				

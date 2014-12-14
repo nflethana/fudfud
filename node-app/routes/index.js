@@ -231,6 +231,52 @@ exports.getMenu = function(req, res) {
 	res.send({});
 };
 
+exports.postRating = function(req, res) {
+	if (!req.session.login) {
+		res.redirect("/");
+		return;
+	}
+
+	// TODO make these values come from a front end form
+	var ratingUser = "shreshth@seas.upenn.edu";
+	var numStars = 4;
+	var comment = "this is a string comment";
+	var ratedUser = "etha@seas.upenn.edu";
+
+	var rating = {};
+	rating.ratingUser = ratingUser;
+	rating.numStars = numStars;
+	rating.comment = comment;
+	rating.ratedUser = ratedUser;
+
+	ratings.addToSet(ratedUser, JSON.stringify(rating), function(err, data) {
+		if (err) {
+			console.log("error putting user rating");
+			console.log(err);
+		} else {
+			res.send(data);
+		}
+	});
+};
+
+exports.getRatings = function(req, res) {
+	if (!req.session.login) {
+		res.redirect("/");
+		return;
+	}
+
+	// TODO: get this value from the front end
+	var username = "etha@seas.upenn.edu";
+
+	ratings.getSet(username, function(err, data) {
+		if (err) {
+			console.log(err);
+		} else {
+			res.send(data);
+		}
+	});
+};
+
 exports.submitRun = function(req, res) {
 	var locations = req.body.location;
 	var t1 = new Date(parseFloat(req.body.pickuptime));
