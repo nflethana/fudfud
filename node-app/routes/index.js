@@ -129,13 +129,21 @@ exports.logout = function(req, res) {
 exports.getInfo = function(req, res) {
 	users.get(req.session.username, function(err, val){
 		if (err) {
-			console.log("Error GetInfo");
+			console.log("Error GetInfo 1");
 		}
 		else {
-			var obj = JSON.parse(val);
-			obj.password = null;
-			obj.username = req.session.username;
-			res.send(obj);
+			ratings.getSet(req.session.username, function(err2, data2) {
+				if (err2) {
+					console.log("Error GetInfo 2");
+				} else {
+					var returnData = JSON.parse(val);
+					returnData.password = null;
+					returnData.username = req.session.username;
+					returnData.allratings = data2;
+					console.log(returnData);
+					res.send(returnData);
+				}
+			});
 		}
 	});
 }
@@ -224,7 +232,16 @@ exports.menu = function(req, res) {
 		return;
 	}
 
-	res.render('menu');
+	req.session.potruck = req.query.truck;
+	req.session.pousername = req.query.username;
+	req.session.pophone = req.query.phone;
+
+	res.render('menu', { 
+		title: 'Place Order',
+		truck: req.query.truck,
+		username: req.query.username,
+		phone: req.query.phone
+	});
 };
 
 exports.getMenu = function(req, res) {
@@ -236,12 +253,11 @@ exports.postRating = function(req, res) {
 		res.redirect("/");
 		return;
 	}
-
-	// TODO make these values come from a front end form
-	var ratingUser = "shreshth@seas.upenn.edu";
-	var numStars = 4;
-	var comment = "this is a string comment";
-	var ratedUser = "etha@seas.upenn.edu";
+	var body = req.body;
+	var ratingUser = body.userRating;
+	var numStars = body.rating;
+	var comment = body.comment;
+	var ratedUser = body.userRated;
 
 	var rating = {};
 	rating.ratingUser = ratingUser;
@@ -254,7 +270,35 @@ exports.postRating = function(req, res) {
 			console.log("error putting user rating");
 			console.log(err);
 		} else {
-			res.send(data);
+			users.get(ratedUser, function(err2, data2) {
+				if (err2) {
+					console.log("error postRating 2");
+				}
+				else {
+					console.log("=============new data=============");
+					var newData = JSON.parse(data2);
+					var crating = newData.rating;
+					var ctotal = newData.total;
+					var newtotal = ctotal + 1;
+					newData.total = newtotal;
+					var newrating = ((crating * ctotal) + parseInt(numStars)) / newtotal;
+					newData.rating = newrating;
+					console.log(crating);
+					console.log(ctotal);
+					console.log(((crating * ctotal) + numStars));
+					console.log(newtotal);
+					console.log(newrating);
+					console.log(numStars);
+					users.put(ratedUser, JSON.stringify(newData), function(err3, data3) {
+						if (err3) {
+							console.log("Error postRating 3");
+						}
+						else {
+							res.send({"success":true});
+						}
+					});
+				}
+			});
 		}
 	});
 };
@@ -264,15 +308,26 @@ exports.getRatings = function(req, res) {
 		res.redirect("/");
 		return;
 	}
-
-	// TODO: get this value from the front end
-	var username = "etha@seas.upenn.edu";
-
-	ratings.getSet(username, function(err, data) {
+	var username = req.session.pousername;
+	users.get(username, function(err, data) {
 		if (err) {
-			console.log(err);
-		} else {
-			res.send(data);
+			console.log("Error getRatings 1");
+		}
+		else {
+			ratings.getSet(username, function(err2, data2) {
+				if (err2) {
+					console.log("Error getRatings 2");
+				} else {
+
+					var returnData = JSON.parse(data);
+					returnData.password = null;
+					returnData.username = username;
+					returnData.allratings = data2;
+					returnData.truck = req.session.potruck;
+					console.log(returnData);
+					res.send(returnData);
+				}
+			});
 		}
 	});
 };

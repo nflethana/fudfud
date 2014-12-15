@@ -1,50 +1,259 @@
-<!DOCTYPE html>
-<html>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<form>
-
-recepient phone number:<br>
-<input type="text" id="recepient">
-<br>
-amount:<br>
-<input type="text" id="amount">
-<br>
-note:<br>
-<input type="text" id="note">
-
-
-<br>
-<br>
-<select id="what_to_do">
-<option value="pay">PAY</option>
-<option value="charge">CHARGE</option>
-<br>
-<br>
-
-</select>
-
-</form>
-
+<!-- Embed the layout.ejs file -->
+<% layout( 'layout' ) -%>
 
 <script>
 $(document).ready(function(){
-  $("#URL").click(function(){
-  	var recepient = $("#recepient").val();
-  	var amount = $("#amount").val();
-  	var note = $("#note").val();
-  	var what_to_do = $("#what_to_do").val();
-    location.href='https://venmo.com/?txn='+what_to_do+'&recipients='+recepient+'&amount='+amount+'&note='+note+
-    '&audience=public';
-  });
+	var venmophone = "";
+	var user = "";
+	var userpo = "";
+  	$.get("/getInfo", function(data, status){
+		$("#firstname").text(data.fullname.split(" ")[0]);
+		$("#img2").attr("src", data.image);
+		user = data.username;
+	});
+
+	$("button#logout").click(function() {
+		$.get("/logout", function(data, status){
+			window.location.replace("/");
+		});
+	});
+
+	$.get("/getRatings", function(data, status) {
+		console.log(data);
+		$("#fullname").text(data.fullname);
+		$("#username").text(data.username);
+		$("#phonenumber").text(data.phone);
+		$("#img1").attr("src", data.image);
+		$("#porating").text(data.rating.toFixed(2));
+		$("#pototal").text(data.total);
+		venmophone = data.phone;
+		userpo = data.username;
+		var truckfullname = "";
+		var truckimg = "";
+		if (data.truck == "Buis") {
+			truckfullname = "Bui's";
+			truckimg = "buis.png"
+		}
+		else if (data.truck == "Magic") {
+			truckfullname = "Magic Carpet";
+			truckimg = "mc.png"
+		}
+		else if (data.truck == "NYG") {
+			truckfullname = "NY Gyro";
+			truckimg = "nyg.png"
+		}
+		else if (data.truck == "Hemos") {
+			truckfullname = "Hemos";
+			truckimg = "hemos.png"
+		}
+		else if (data.truck == "KoJa") {
+			truckfullname = "KoJa";
+			truckimg = "koja.png"
+		}
+		$("#truckname").text(truckfullname);
+		$("#truckmenu").attr("src", truckimg);
+		for (var i = 0; i < data.allratings.length; i++) {
+			var curr = JSON.parse(data.allratings[i]);
+			$("#allratings").append("" +
+				"<div class='panel panel-default' style='width:80%;''>" +
+					  "<div class='panel-body'>" +
+					    curr.numStars + " <span class='glyphicon glyphicon-star' aria-hidden='true'></span>" + "<br>" + curr.comment +
+					  "</div>" +
+					"</div>");
+		}
+	});
+
+	$("#amount").keyup(function(){
+		var venmolink = "https://venmo.com/?txn=pay&audience=public&recipients=" + venmophone + "&amount=" + $("#amount").val() + "&note=" + $("#ordertext").val();
+		$("#venmo").attr("href", venmolink);
+	});
+
+	$("#ordertext").keyup(function(){
+		var venmolink = "https://venmo.com/?txn=pay&audience=public&recipients=" + venmophone + "&amount=" + $("#amount").val() + "&note=" + $("#ordertext").val();
+		$("#venmo").attr("href", venmolink);
+	});
+
+  	$("#URL").click(function(){
+  		var recepient = $("#recepient").val();
+	  	var amount = $("#amount").val();
+	  	var note = $("#note").val();
+	  	var what_to_do = $("#what_to_do").val();
+	    location.href='https://venmo.com/?txn='+what_to_do+'&recipients='+recepient+'&amount='+amount+'&note='+note+
+	    '&audience=public';
+	});
+
+	$("button#one").click(function() {
+		var json_data = {
+			"comment": $("#comment").val(),
+			"rating": 1,
+			"userRated": userpo,
+			"userRating": user 
+		};
+		console.log(json_data);
+		$.post("/postRating", json_data, function(data) {
+			if (data.success) {
+				$("#reviewform").hide();
+				$("#ratingsuccess").text("Your rating has been posted. Thank you! :)");
+			}
+		});
+	});
+	$("button#two").click(function() {
+		var json_data = {
+			"comment": $("#comment").val(),
+			"rating": 2,
+			"userRated": userpo,
+			"userRating": user 
+		};
+		console.log(json_data);
+		$.post("/postRating", json_data, function(data) {
+			if (data.success) {
+				$("#reviewform").hide();
+				$("#ratingsuccess").text("Your rating has been posted. Thank you! :)");
+			}
+		});
+	});
+	$("button#three").click(function() {
+		var json_data = {
+			"comment": $("#comment").val(),
+			"rating": 3,
+			"userRated": userpo,
+			"userRating": user 
+		};
+		console.log(json_data);
+		$.post("/postRating", json_data, function(data) {
+			if (data.success) {
+				$("#reviewform").hide();
+				$("#ratingsuccess").text("Your rating has been posted. Thank you! :)");
+			}
+		});
+	});
+	$("button#four").click(function() {
+		var json_data = {
+			"comment": $("#comment").val(),
+			"rating": 4,
+			"userRated": userpo,
+			"userRating": user 
+		};
+		console.log(json_data);
+		$.post("/postRating", json_data, function(data) {
+			if (data.success) {
+				$("#reviewform").hide();
+				$("#ratingsuccess").text("Your rating has been posted. Thank you! :)");
+			}
+		});
+	});
+	$("button#five").click(function() {
+		var json_data = {
+			"comment": $("#comment").val(),
+			"rating": 5,
+			"userRated": userpo,
+			"userRating": user 
+		};
+		console.log(json_data);
+		$.post("/postRating", json_data, function(data) {
+			if (data.success) {
+				$("#reviewform").hide();
+				$("#ratingsuccess").text("Your rating has been posted. Thank you! :)");
+			}
+		});
+	});
 });
-/*function goToURL(amount){
-
-location.href='https://venmo.com/?txn=pay&audience=public';
-
-}*/
 </script>
-
-<body>
-<a  href="javascript:void(0)" target=_blank  id="URL">Go To URL</a>
-</body>
-</html>
+<div class="page">
+	<div class="sidebar">
+		<div align="center">
+			<a href="/home">
+				<h1 class="fudfont">Füd-Füd</h1>
+			</a>
+			<div style="padding-top:32px;">
+				<a href="/engineering">
+					<h4 class="otherfont">Engineering Quad</h4>
+				</a>
+			</div>
+			<a href="/huntsman">
+				<h4 class="otherfont">Huntsman</h4>
+			</a>
+			<a href="/harnwell">
+				<h4 class="otherfont">Harnwell</h4>
+			</a>
+			<a href="/harrison">
+				<h4 class="otherfont">Harrison</h4>
+			</a>
+			<a href="/rodin">
+				<h4 class="otherfont">Rodin</h4>
+			</a>
+			<a href="/vp">
+				<h4 class="otherfont">Van Pelt</h4>
+			</a>
+			<a href="/radian">
+				<h4 class="otherfont">Radian</h4>
+			</a>
+			<div class="foottext" align="center">
+				© Füd-Füd 2014
+			</div>
+		</div>
+	</div>
+	<div class="center container" align="center">
+		<h1 class="fudfontblack">Place Order</h1>
+		<br>
+		<div class="row">
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<h4 id="truckname"></h4>
+				<form id="pay">
+					<div class="form-group">
+    					<label for="amount">Amount</label>
+    					<input type="number" class="form-control" id="amount" placeholder="Enter $ Amount" tabindex="1" onkeydown="if (event.keyCode == 13) document.getElementById('save').click();" style="width:80%;">
+ 					</div>
+ 					<div class="form-group">
+    					<label for="ordertext">Order Details</label>
+    					<input type="text" class="form-control" id="ordertext" placeholder="Enter Order Text" tabindex="2" onkeydown="if (event.keyCode == 13) document.getElementById('save').click();" style="width:80%;">
+ 					</div>
+				</form>
+				<a target="_blank" href="" id="venmo"><button id="save" class="btn btn-default">Venmo</button></a>
+				<br><br>
+				<img id="truckmenu" src="" alt="Menu" style="width: 80%;">
+				<br><br>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<h4 id="fullname"></h4>
+				<div id="username"></div>
+				<div id="phonenumber"></div>
+				<h3><img src="star.png" style="width:60px;"> <span id="porating"></span>/5</h3>
+				<h5>[<span id="pototal"></span> Ratings]</h5>
+				<br><br>
+				<img id="img1" src="http://www.seas.upenn.edu/~shreshth/no-image.jpg" style="height:240px;" class="img-rounded"><br><br>
+				<div id="reviewform">
+			      	<div class="form-group">
+			    		<label for="comment">Comment</label>
+			    		<input type="text" class="form-control" id="comment" placeholder="Enter Comment :)" style="width:80%;">
+			 		</div>
+			        <button id="one" type="button" class="btn btn-default">1 <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+			        <button id="two" type="button" class="btn btn-default">2 <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+			        <button id="three" type="button" class="btn btn-default">3 <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+			        <button id="four" type="button" class="btn btn-default">4 <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+			        <button id="five" type="button" class="btn btn-default">5 <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+			    </div>
+			    <div id="ratingsuccess"></div>
+			    <br><br>
+				<div id="allratings">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="rightbar otherfont">
+		<div align="center">
+			<a href="/home">
+				<div>
+					<span id="firstname"></span><br>
+					<img id="img2" src="http://www.seas.upenn.edu/~shreshth/no-image.jpg" style="height:66px; width:58px; padding-left:4px; padding-right:4px; padding-top:8px; padding-bottom:8px;" class="img-circle"><br>
+				</div>
+			</a>
+			<button id="logout" style="text-decoration: none;" type="button" class="btn btn-link">
+				<h5 class="otherfont">Logout</h5>
+			</button>
+			<a href="/add">
+				<h5 class="otherfont">+ Add<br>Füd-Run</h5>
+			</a>
+		</div>
+	</div>
+</div>

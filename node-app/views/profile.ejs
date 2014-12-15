@@ -11,7 +11,16 @@
 			$("#email").text(data.username);
 			$("#phone").text(data.phone);
 			$("#total").text(data.total);
-			$("#rating").text(data.rating);
+			$("#rating").text(data.rating.toFixed(2));
+			for (var i = 0; i < data.allratings.length; i++) {
+			var curr = JSON.parse(data.allratings[i]);
+			$("#allratings").append("" +
+				"<div class='panel panel-default' style='width:60%;''>" +
+					  "<div class='panel-body'>" +
+					    curr.numStars + " <span class='glyphicon glyphicon-star' aria-hidden='true'></span>" + "<br>" + curr.comment +
+					  "</div>" +
+					"</div>");
+			}
 		});
 		$("button#logout").click(function() {
 			$.get("/logout", function(data, status){
@@ -71,6 +80,9 @@
 				<span id="email"></span><br>
 				<span id="phone"></span><br>
 			</div>
+		</div>
+		<br><br>
+		<div id="allratings">
 		</div>
 	</div>
 	<div class="rightbar otherfont">
